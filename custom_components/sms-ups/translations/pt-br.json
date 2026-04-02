@@ -1,0 +1,21 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "description": "Selecione a porta USB / serial conectado ao seu nobreak. Se nenhuma porta aparecer, digite manualmente (ex. /dev/ttyUSB0). Consulte o manual do seu modelo para obter os demais valores.",
+                "data": {
+                    "usb_port": "Porta USB / Serial",
+                    "nobreak_total_power": "Potência Total do Nobreak (W)",
+                    "nobreak_power_factor": "Fator de Potência (0.1 – 1.0)"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Não foi possível se conectar à porta selecionada. Verifique se o dispositivo está conectado e se o Home Assistant tem acesso.",
+            "unknown": "Erro desconhecido."
+        },
+        "abort": {
+            "already_configured": "Este nobreak já está configurado."
+        }
+    }
+}

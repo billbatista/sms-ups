@@ -1,5 +1,5 @@
 {
-    "name": "ludeeus/integration_blueprint",
+    "name": "billbatista/custom_components/sms-ups",
     "image": "mcr.microsoft.com/devcontainers/base:debian",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
@@ -35,7 +35,7 @@
             }
         }
     },
-    "remoteUser": "vscode",
+    "remoteUser": "root",
     "features": {
         "ghcr.io/devcontainers/features/python:1": {
             "version": "3.14"

@@ -1,0 +1,21 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "description": "Select the USB / serial port your UPS is connected to. If no ports appear, enter the path manually (e.g. /dev/ttyUSB0). See product manual for values.",
+                "data": {
+                    "usb_port": "USB / Serial Port",
+                    "nobreak_total_power": "UPS Total Power (W)",
+                    "nobreak_power_factor": "Power Factor (0.1 – 1.0)"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Cannot open the selected port. Check the device is connected and that Home Assistant has permission to access it.",
+            "unknown": "Unknown error occurred."
+        },
+        "abort": {
+            "already_configured": "This UPS port is already configured."
+        }
+    }
+}
