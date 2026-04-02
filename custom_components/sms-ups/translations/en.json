@@ -2,11 +2,11 @@
     "config": {
         "step": {
             "user": {
-                "description": "Select the USB / serial port your UPS is connected to. If no ports appear, enter the path manually (e.g. /dev/ttyUSB0). See product manual for values.",
+                "description": "Select the USB / serial port your UPS is connected to. If no ports appear, enter the path manually (e.g. /dev/ttyUSB0)",
                 "data": {
                     "usb_port": "USB / Serial Port",
                     "nobreak_total_power": "UPS Total Power (W)",
-                    "nobreak_power_factor": "Power Factor (0.1 – 1.0)"
+                    "nobreak_power_factor": "Power Factor (0.1 - 1.0)"
                 }
             }
         },
