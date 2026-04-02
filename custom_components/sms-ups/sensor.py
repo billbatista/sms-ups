@@ -105,6 +105,8 @@ async def async_setup_entry(
 class SmsUpsSensor(SmsUpsEntity, SensorEntity):
     """SMS UPS Sensor class."""
 
+    _attr_has_entity_name = True
+
     def __init__(
         self,
         coordinator: SmsUpsDataUpdateCoordinator,
