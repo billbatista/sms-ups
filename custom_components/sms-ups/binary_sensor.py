@@ -21,9 +21,29 @@ if TYPE_CHECKING:
 
 ENTITY_DESCRIPTIONS = (
     BinarySensorEntityDescription(
-        key="custom_components/sms-ups",
-        name="SMS UPS Binary Sensor",
-        device_class=BinarySensorDeviceClass.CONNECTIVITY,
+        key="onBattery",
+        name="On Battery",
+        device_class=BinarySensorDeviceClass.RUNNING,
+    ),
+    BinarySensorEntityDescription(
+        key="lowBattery",
+        name="Low Battery",
+        device_class=BinarySensorDeviceClass.BATTERY,
+    ),
+    BinarySensorEntityDescription(
+        key="upsOk",
+        name="Status",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+    ),
+    BinarySensorEntityDescription(
+        key="testActive",
+        name="Running test",
+        device_class=BinarySensorDeviceClass.RUNNING,
+    ),
+    BinarySensorEntityDescription(
+        key="beepOn",
+        name="Alarm Muted",
+        icon="mdi:alarm",
     ),
 )
 
@@ -44,7 +64,7 @@ async def async_setup_entry(
 
 
 class SmsUpsBinarySensor(SmsUpsEntity, BinarySensorEntity):
-    """custom_components/sms-ups binary_sensor class."""
+    """SMS UPS binary_sensor class."""
 
     def __init__(
         self,
@@ -54,8 +74,21 @@ class SmsUpsBinarySensor(SmsUpsEntity, BinarySensorEntity):
         """Initialize the binary_sensor class."""
         super().__init__(coordinator)
         self.entity_description = entity_description
+        self._attr_unique_id = (
+            f"{coordinator.config_entry.entry_id}_{entity_description.key}"
+        )
 
     @property
     def is_on(self) -> bool:
         """Return true if the binary_sensor is on."""
-        return self.coordinator.data.get("title", "") == "foo"
+        if self.coordinator.data is None:
+            return False
+
+        original_value = self.coordinator.data.get(self.entity_description.key, False)
+
+        if self.entity_description.key == "upsOk":
+            return not original_value
+        if self.entity_description.key == "beepOn":
+            return not original_value
+
+        return original_value

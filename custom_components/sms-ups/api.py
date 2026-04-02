@@ -101,10 +101,20 @@ class SmsUpsSerialClient:
         a 100 ms delay between bytes, then reads up to 32 bytes.
         """
         try:
+            _LOGGER.debug("Sending command to UPS: %s", cmd_bytes.hex())
+            # log the time it takes to send the command and receive a response (for debugging timeouts)
+            start_time = time.time()
+
             for byte in cmd_bytes:
                 self._ser.write(bytes([byte]))
                 time.sleep(_BYTE_DELAY)
-            return self._ser.read(_READ_BYTES)
+
+            elapsed_time = time.time() - start_time
+            response = self._ser.read(_READ_BYTES)
+
+            _LOGGER.debug("Response received in %.3f seconds", elapsed_time)
+            return response
+
         except serial.SerialException as exc:
             msg = f"Serial communication error: {exc}"
             raise SmsUpsSerialClientCommunicationError(msg) from exc
@@ -136,10 +146,22 @@ class SmsUpsSerialClient:
             _checksum,
         ) = _RESPONSE_STRUCT.unpack_from(response)
 
+        # Decode status bits
+        on_battery = bool(status & 0x80)
+        low_battery = bool(status & 0x40)
+        bypass = bool(status & 0x20)
+        boost = bool(status & 0x10)
+        ups_ok = bool(status & 0x08)
+        test_active = bool(status & 0x04)
+        shutdown_active = bool(status & 0x02)
+        beep_on = bool(status & 0x01)
+
         _LOGGER.debug(
             "UPS raw response: hex=%s | "
             "lastInputVac=%d outputVac=%d inputVac=%d outputPower=%d "
-            "outputHz=%d batteryLevel=%d temperatureC=%d status=0x%02x checksum=0x%02x",
+            "outputHz=%d batteryLevel=%d temperatureC=%d status=0x%02x "
+            "(onBattery=%s lowBattery=%s bypass=%s boost=%s upsOk=%s "
+            "testActive=%s shutdownActive=%s beepOn=%s) checksum=0x%02x",
             response.hex(),
             last_input_vac_raw,
             output_vac_raw,
@@ -149,6 +171,14 @@ class SmsUpsSerialClient:
             battery_level_raw,
             temperature_raw,
             status,
+            on_battery,
+            low_battery,
+            bypass,
+            boost,
+            ups_ok,
+            test_active,
+            shutdown_active,
+            beep_on,
             _checksum,
         )
 
@@ -162,12 +192,12 @@ class SmsUpsSerialClient:
             "temperatureC": temperature_raw / 10,
             # Status bits — bit 7 (MSB) → onBattery, bit 0 (LSB) → beepOn
             # Matches dadosNoBreak() bit ordering in smsUPS.py
-            "onBattery": bool(status & 0x80),
-            "lowBattery": bool(status & 0x40),
-            "bypass": bool(status & 0x20),
-            "boost": bool(status & 0x10),
-            "upsOk": bool(status & 0x08),
-            "testActive": bool(status & 0x04),
-            "shutdownActive": bool(status & 0x02),
-            "beepOn": bool(status & 0x01),
+            "onBattery": on_battery,
+            "lowBattery": low_battery,
+            "bypass": bypass,
+            "boost": boost,
+            "upsOk": ups_ok,
+            "testActive": test_active,
+            "shutdownActive": shutdown_active,
+            "beepOn": beep_on,
         }
