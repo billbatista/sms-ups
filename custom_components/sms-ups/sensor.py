@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from token import PERCENT, PERCENTEQUAL
 from typing import TYPE_CHECKING
 
 from homeassistant.components.sensor import (
@@ -10,7 +11,13 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.const import UnitOfElectricPotential, UnitOfPower
+from homeassistant.const import (
+    PERCENTAGE,
+    UnitOfElectricPotential,
+    UnitOfFrequency,
+    UnitOfPower,
+    UnitOfTemperature,
+)
 
 from .const import CONF_NOBREAK_POWER_FACTOR, CONF_NOBREAK_TOTAL_POWER
 from .entity import SmsUpsEntity
@@ -30,6 +37,16 @@ ENTITY_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfElectricPotential.VOLT,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=0,
+        icon="mdi:flash",
+    ),
+    SensorEntityDescription(
+        key="outputVac",
+        name="Output Voltage",
+        device_class=SensorDeviceClass.VOLTAGE,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        icon="mdi:flash",
     ),
     SensorEntityDescription(
         key="outputPower",
@@ -38,6 +55,34 @@ ENTITY_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfPower.WATT,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=0,
+        icon="mdi:flash",
+    ),
+    SensorEntityDescription(
+        key="outputHz",
+        name="Output Frequency",
+        device_class=SensorDeviceClass.FREQUENCY,
+        native_unit_of_measurement=UnitOfFrequency.HERTZ,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        icon="mdi:sine-wave",
+    ),
+    SensorEntityDescription(
+        key="batteryLevel",
+        name="Battery Level",
+        device_class=SensorDeviceClass.BATTERY,
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        icon="mdi:battery",
+    ),
+    SensorEntityDescription(
+        key="temperatureC",
+        name="Temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        icon="mdi:thermometer",
     ),
 )
 
