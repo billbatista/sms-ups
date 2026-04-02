@@ -66,6 +66,8 @@ async def async_setup_entry(
 class SmsUpsBinarySensor(SmsUpsEntity, BinarySensorEntity):
     """SMS UPS binary_sensor class."""
 
+    _attr_has_entity_name = True
+
     def __init__(
         self,
         coordinator: SmsUpsDataUpdateCoordinator,
