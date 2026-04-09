@@ -64,6 +64,7 @@ class SmsUpsFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                         for k, v in ports.items()
                     ],
                     mode=selector.SelectSelectorMode.DROPDOWN,
+                    custom_value=True,
                 ),
             )
         else:
