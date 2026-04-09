@@ -1,46 +1,52 @@
-# Notice
+# SMS UPS
 
-The component and platforms in this repository are not meant to be used by a
-user, but as a "blueprint" that custom component developers can build
-upon, to make more awesome stuff.
+Integração Home Assistant para nobreaks da marca SMS.
 
-HAVE FUN! 😎
+Pessoalmente só pude validar o funcionamento no modelo [SMS Pro 1500VA](https://www.sms.com.br/produtos/detalhe/nobreaks-ups-1/line-interactive/nobreak-sms-pro-1500-va/).
 
-## Why?
+## Requerimentos
 
-This is simple, by having custom_components look (README + structure) the same
-it is easier for developers to help each other and for users to start using them.
+O nobreak deve estar conectado ao servidor do Home Assistant via cabo USB.
 
-If you are a developer and you want to add things to this "blueprint" that you think more
-developers will have use for, please open a PR to add it :)
+## Como instalar
 
-## What?
+### HACS
 
-This repository contains multiple files, here is a overview:
+No canto superior direito clique no botão com 3 pontos e em [custom repositories](https://www.hacs.xyz/docs/faq/custom_repositories/). Cole o [link deste repositório](https://github.com/billbatista/sms-ups) e selecione a opção `Integration` e clique em `Add`. Reinicie o Home Assistant.
 
-File | Purpose | Documentation
--- | -- | --
-`.devcontainer.json` | Used for development/testing with Visual Studio Code. | [Documentation](https://code.visualstudio.com/docs/remote/containers)
-`.github/ISSUE_TEMPLATE/*.yml` | Templates for the issue tracker | [Documentation](https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository)
-`custom_components/custom_components/sms-ups/*` | Integration files, this is where everything happens. | [Documentation](https://developers.home-assistant.io/docs/creating_component_index)
-`CONTRIBUTING.md` | Guidelines on how to contribute. | [Documentation](https://help.github.com/en/github/building-a-strong-community/setting-guidelines-for-repository-contributors)
-`LICENSE` | The license file for the project. | [Documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository)
-`README.md` | The file you are reading now, should contain info about the integration, installation and configuration instructions. | [Documentation](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
-`requirements.txt` | Python packages used for development/lint/testing this integration. | [Documentation](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
 
-## How?
+### Manualmente
 
-1. Create a new repository in GitHub, using this repository as a template by clicking the "Use this template" button in the GitHub UI.
-1. Open your new repository in Visual Studio Code devcontainer (Preferably with the "`Dev Containers: Clone Repository in Named Container Volume...`" option).
-1. Rename all instances of the `custom_components/sms-ups` to `custom_components/<your_integration_domain>` (e.g. `custom_components/awesome_integration`).
-1. Rename all instances of the `SMS UPS` to `<Your Integration Name>` (e.g. `Awesome Integration`).
-1. Run the `scripts/develop` to start HA and test out your new integration.
+[Baixe](https://github.com/billbatista/sms-ups/archive/refs/heads/main.zip) o repositório, copie e cole a pasta `sms-ups` que fica dentro de `custom_components` na pasta `config/custom_components` do Home Assistant. Reinicie o Home Assistant.
 
-## Next steps
+# Configuração
 
-These are some next steps you may want to look into:
-- Add tests to your integration, [`pytest-homeassistant-custom-component`](https://github.com/MatthewFlamm/pytest-homeassistant-custom-component) can help you get started.
-- Add brand images (logo/icon).
-- Create your first release.
-- Share your integration on the [Home Assistant Forum](https://community.home-assistant.io/).
-- Submit your integration to [HACS](https://hacs.xyz/docs/publish/start).
+Depois de instalar vá à página de integrações do HA e procure por `sms ups`. A integração irá pedir o caminho da porta USB que o dispositivo está conectado, a potência total do seu modelo e fator de potência. Verifique por estes valores no manual do seu produto.
+
+# Sensores disponíveis
+
+|Nome|Detalhes|
+|--|--|
+|Alarm muted|Indica se o alarme sonoro do aparelho foi mutado|
+|Battery level|Indica o nível de carga da bateria. Em meus testes, esta informação só é atualizada quando o nobreak está conectado à rede elétrica, ou seja, não é atualizado quando está no modo bateria|
+|Input voltage|Tensão de entrada|
+|Low battery|Bateria baixa|
+|On battery|Nobreak está fornecendo energia através da bateria|
+|Output frequency|Frequência de entrada|
+|Output power|Potência de saída, levando em consideração a potência total do aparelho + fator de potência|
+|Output voltage|Tensão de saída|
+|Running test|Se algum teste está sendo executado no momento|
+|Status|Status do aparelho|
+|Temperatura|Temperatura ambiente do aparelho|
+
+# Resolução de problemas
+
+## Meu nobreak não aparece na lista de portas USB
+
+Este problema varia de acordo com o método de instalação do HA que você utiliza (docker, máquina virtual, instalado direto no hardware). Procure por `usb passthrough` + seu método de instalação para entender como passar o USB conectado ao seu servidor para o HA.
+
+# Reconhecimento
+
+Esta integração só foi possível graças ao trabalho disponível em:
+- https://github.com/cavamora/home_assistant_nodered_sms_ups_monitor/blob/main/README.md
+- https://github.com/dmslabsbr/smsUps
