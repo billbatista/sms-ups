@@ -1,3 +1,15 @@
+## [1.0.1-beta.1](https://github.com/billbatista/sms-ups/compare/v1.0.0...v1.0.1-beta.1) (2026-04-10)
+
+
+### Bug Fixes
+
+* **api:** validate start and and marker ([e627be3](https://github.com/billbatista/sms-ups/commit/e627be3d4e077a7ce1695f16aca27f45e24ffa2d))
+
+
+### Documentation
+
+* update README ([0797b31](https://github.com/billbatista/sms-ups/commit/0797b3132a313df7a80dabf148cde5cde86aebda))
+
 ## 1.0.0 (2026-04-09)
 
 
