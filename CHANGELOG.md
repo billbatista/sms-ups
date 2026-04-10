@@ -1,3 +1,10 @@
+## [1.0.1-beta.2](https://github.com/billbatista/sms-ups/compare/v1.0.1-beta.1...v1.0.1-beta.2) (2026-04-10)
+
+
+### Reverts
+
+* Revert "fix(api): validate start and and marker" ([ac85e51](https://github.com/billbatista/sms-ups/commit/ac85e5108b2c2b3bf029ee441878791f12e1020d))
+
 ## [1.0.1-beta.1](https://github.com/billbatista/sms-ups/compare/v1.0.0...v1.0.1-beta.1) (2026-04-10)
 
 
