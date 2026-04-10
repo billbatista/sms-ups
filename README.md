@@ -2,7 +2,9 @@
 
 Integração Home Assistant para nobreaks da marca SMS.
 
-Pessoalmente só pude validar o funcionamento no modelo [SMS Pro 1500VA](https://www.sms.com.br/produtos/detalhe/nobreaks-ups-1/line-interactive/nobreak-sms-pro-1500-va/).
+## Modelos compatíveis confirmados
+- [SMS Pro 1500](https://www.sms.com.br/produtos/detalhe/nobreaks-ups-1/line-interactive/nobreak-sms-pro-1500-va/)
+- SMS Pro 700
 
 ## Requerimentos
 
