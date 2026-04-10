@@ -37,7 +37,8 @@ _SERIAL_TIMEOUT = 10  # seconds
 #   [17]     0x0D end marker
 _RESPONSE_STRUCT = struct.Struct(">B7HBB")
 _RESPONSE_START = 0x3D
-_MIN_RESPONSE_LEN = _RESPONSE_STRUCT.size  # 17 bytes
+_RESPONSE_END = 0x0D
+_MIN_RESPONSE_LEN = 18  # Full response including end marker
 
 
 class SmsUpsSerialClientError(Exception):
@@ -102,7 +103,7 @@ class SmsUpsSerialClient:
         """
         try:
             _LOGGER.debug("Sending command to UPS: %s", cmd_bytes.hex())
-            # log the time it takes to send the command and receive a response (for debugging timeouts)
+            # Time command execution for debugging timeouts
             start_time = time.time()
 
             for byte in cmd_bytes:
@@ -126,10 +127,26 @@ class SmsUpsSerialClient:
         Equivalent to trataRetorno() + dadosNoBreak() in smsUPS.py,
         rewritten using struct for clarity.
         """
-        if len(response) < _MIN_RESPONSE_LEN or response[0] != _RESPONSE_START:
+        # Validate response length and start/end markers
+        # (matching Node-RED flow validation)
+        if len(response) < _MIN_RESPONSE_LEN:
             msg = (
-                f"Invalid UPS response (len={len(response)}, "
-                f"start={response[:1].hex() if response else 'empty'})"
+                f"Invalid UPS response: too short "
+                f"(len={len(response)}, expected {_MIN_RESPONSE_LEN})"
+            )
+            raise SmsUpsSerialClientCommunicationError(msg)
+
+        if response[0] != _RESPONSE_START:
+            msg = (
+                f"Invalid UPS response: bad start marker "
+                f"(got 0x{response[0]:02x}, expected 0x{_RESPONSE_START:02x})"
+            )
+            raise SmsUpsSerialClientCommunicationError(msg)
+
+        if response[17] != _RESPONSE_END:
+            msg = (
+                f"Invalid UPS response: bad end marker "
+                f"(got 0x{response[17]:02x}, expected 0x{_RESPONSE_END:02x})"
             )
             raise SmsUpsSerialClientCommunicationError(msg)
 
